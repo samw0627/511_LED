@@ -1,23 +1,75 @@
 #include <FastLED.h>
- 
- 
+
 #define LED_PIN     7
 #define NUM_LEDS    134
 uint8_t colorIndex[NUM_LEDS];
 
+/**
+Green Blue: Rain
+Red Yellow: Sunny
+
+
+*/
 DEFINE_GRADIENT_PALETTE( greenblue_gp ) { 
   0,   0,  255, 245,
   46,  0,  21,  255,
   179, 12, 250, 0,
   255, 0,  255, 245
 };
-CRGB leds[NUM_LEDS];
 CRGBPalette16 greenblue = greenblue_gp;
 
- 
+
+ DEFINE_GRADIENT_PALETTE(purpleorange_gp) {
+  0,    0,   0,   125,  // Blue
+  46,   75,  0,   130,  // Indigo
+  179,  138, 43,  226,  // Blue Violet
+  255,  128, 0,   128   // Purple
+};
+
+
+
+CRGBPalette16 purpleorange = purpleorange_gp;
+
+DEFINE_GRADIENT_PALETTE(purpleblue_gp) {
+  255,  255, 255, 255,  // White
+  46,   75,  0,   130,  // Indigo
+  179,  138, 43,  226,  // Blue Violet
+  255,  255, 255, 255,   // White
+};
+
+
+
+CRGBPalette16 purpleblue = purpleblue_gp;
+
+DEFINE_GRADIENT_PALETTE(yellowgreen_gp) {
+  0,    255, 255, 0,   // Yellow
+  128,  0,   255, 0,   // Green
+  255,  255, 255, 0,    // Yellow
+  //255,  255, 255, 255,   // White
+
+};
+
+CRGBPalette16 yellowgreen = yellowgreen_gp;
+
+
+DEFINE_GRADIENT_PALETTE(yellow_gp) {
+  0,    255, 255, 0,   // Yellow
+};
+
+CRGBPalette16 yellow = yellow_gp;
+
+DEFINE_GRADIENT_PALETTE(green_gp) {
+  128,  0,   255, 0,   // Green
+};
+
+CRGBPalette16 green = green_gp;
+
+CRGB leds[NUM_LEDS];
+
+
 void setup() {
- 
-  Serial.begin(9600);
+  // put your setup code here, to run once:
+   Serial.begin(9600);
   delay(200);
   Serial.println("1. Temperature");
   Serial.println("2. Precipitation");
@@ -31,123 +83,148 @@ void setup() {
   for (int i = 0; i < NUM_LEDS; i++) {
     colorIndex[i] = random8();
   }
+
 }
 
- 
 void loop() {
-    Serial.println("Please choose a weather info to be displayed ");
+  // put your main code here, to run repeatedly:
+  Serial.println("Please choose a weather info to be displayed ");
 
     while (Serial.available() == 0) {
       
   }
   
   int menuChoice = Serial.parseInt();
+  int flag = false;
 
-  Serial.println("Menu : "+ menuChoice);
-  if(menuChoice == 1){
-    //First 12th hour
-      int r_value_array[] = {244,244,244,0,0,0,0,160,160,160,160 ,160};
-      int g_value_array[]= {232,232,232,193,193,193,193,193,193,193,193 ,193};
-      int b_value_array[] = {193 ,193 ,193 ,185 ,185 ,185 ,185,185 ,185 ,185 ,185 ,185};
-      int hour = 0;
-      Serial.println("Displaying Temperature Information...");
-     for(int i = 0; i < 60 ; i+=5){
-      for(int j = 0; j < 5 ; j++){
-        leds[i+j] = CRGB(r_value_array[hour],g_value_array[hour], b_value_array[hour]);
-        FastLED.show();
-      
-      }
-      delay(100);
-     hour++;
-      }
+    if(menuChoice == 1){
+      int loop = 0;
+      while(loop < 2000){
+        uint8_t sinBeat = beatsin8(30, 0, 255, 0, 0);
 
-    //Second 12th Hour
-   
-    hour = 0;
-     for(int i = 60; i < 134 ; i+=7){
-      for(int j = 0; j < 7 ; j++){
-        //leds[i+j] = CRGB(r_value_array[hour],g_value_array[hour], b_value_array[hour]);
-        leds[i+j] = CRGB(r_value_array[hour],g_value_array[hour], b_value_array[hour]);
-        Serial.print(r_value_array[hour]);
-        FastLED.show();
-      
-      }
-      delay(100);
-     hour++;
-      }
-
-      while(Serial.available() == 0){
-        // Make the LEDs fade in and out
-        fadeToBlackBy(leds,20,1);
-        delay(1000);
-
-      }
-      
-  }
-    if(menuChoice == 2){
-      /**int  r_value_array_2 [] = {0,0,244,0,0,0,0,160,0,160,0 ,160};
-      int  g_value_array_2 []= {0,0,232,193,193,193,193,193,193,193,0 ,255};
-      int  b_value_array_2 [] = {193 ,193 ,0 ,0 ,185 ,0 ,185,0 ,185 ,185 ,185 ,255};
-      int hour2 = 0;
-      Serial.println("Displaying Precipitation Information...");
-      for(int i = 0; i < 60 ; i+=5){
-        for(int j = 0; j < 5 ; j++){
-          leds[i+j] = CRGB(r_value_array_2[hour2],g_value_array_2[hour2], b_value_array_2[hour2]);
-          FastLED.show();
+        for (int i = 0; i < 20; i++) {
+          leds[i] = ColorFromPalette(green, colorIndex[i]);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
         }
-      delay(100);
-      hour2++;
-      }*/
 
-      while(true){
-        uint8_t sinBeat   = beatsin8(10, 0, NUM_LEDS - 1, 0, 0);
-  uint8_t sinBeat2  = beatsin8(10, 0, NUM_LEDS - 1, 0, 85);
-  uint8_t sinBeat3  = beatsin8(10, 0, NUM_LEDS - 1, 0, 170);
+        for (int i = 20; i < 25; i++) {
+          leds[i] = ColorFromPalette(yellowgreen, colorIndex[i]);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
 
-  // If you notice that your pattern is missing out certain LEDs, you
-  // will need to use the higher resolution beatsin16 instead. In this
-  // case remove the 3 lines above and replace them with the following:
-  // uint16_t sinBeat   = beatsin16(30, 0, NUM_LEDS - 1, 0, 0);
-  // uint16_t sinBeat2  = beatsin16(30, 0, NUM_LEDS - 1, 0, 21845);
-  // uint16_t sinBeat3  = beatsin16(30, 0, NUM_LEDS - 1, 0, 43690);
+        for(int j = 25; j < 55; j++){
+          leds[j] = ColorFromPalette(yellow, colorIndex[j]);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
 
-  leds[sinBeat]   = CRGB::Green;
-  leds[sinBeat2]  = CRGB::Blue;
-  leds[sinBeat3]  = CRGB::Red;
+        for (int i = 55; i < 60; i++) {
+          leds[i] = ColorFromPalette(yellow, colorIndex[i], sinBeat);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
 
-  EVERY_N_MILLISECONDS(1){
-    for(int i = 0; i < 4; i++) {
-      blur1d(leds, NUM_LEDS, 50);
-      
-    }
-  }
-  
-  //fadeToBlackBy(leds, NUM_LEDS, 10);
-  //delay(100);
-  FastLED.show();
-      }
-      
-    }
+        for (int i = 60; i < NUM_LEDS; i++) {
+          leds[i] = ColorFromPalette(green, colorIndex[i]);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
 
-    if(menuChoice == 3){
-      while(true){
-        //Creat a sin wave with period of 2 seconds (30bpm) to change the brightness of the strip
-  uint8_t sinBeat = beatsin8(30, 100, 255, 0, 0);
-  
-  // Color each pixel from the palette using the index from colorIndex[]
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = ColorFromPalette(greenblue, colorIndex[i], sinBeat);
-  }
-  
-  EVERY_N_MILLISECONDS(5){
-    for (int i = 0; i < NUM_LEDS; i++) {
-      colorIndex[i]++;
-    }
-  }
-  delay(10);
-  FastLED.show();
+         EVERY_N_MILLISECONDS(5){
+      for (int i = 55; i < 60; i++) {
+        colorIndex[i]++;
       }
     }
-
-    
+      delay(10);
+      flag = true;
+      if(flag){
+        FastLED.show();
+      }
+      loop++;
+      }
+      
   }
+
+      if(menuChoice == 2){
+        int loop  = 0;
+      while(loop < 2000){
+        uint8_t sinBeat = beatsin8(30, 0, 255, 0, 0);
+
+
+        for (int i = 0; i < 5; i++) {
+          leds[i].setRGB(75,  0,   130);
+          //leds[i] = ColorFromPalette(purpleblue, colorIndex[i]);
+
+
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+
+         for (int i = 5; i < 45; i++) {
+          leds[i].setRGB(75,  0,   130);
+          //leds[i] = ColorFromPalette(purpleblue, colorIndex[i]);
+
+
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+
+        for (int i = 45; i < 59; i++) {
+          leds[i].setRGB(75,  0,   130);
+        //leds[i] = ColorFromPalette(purpleblue, colorIndex[i]);
+
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+         for (int i = 59; i < 65; i++) {
+          leds[i] = ColorFromPalette(purpleblue, colorIndex[i],sinBeat);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+
+        for (int i = 65; i < NUM_LEDS; i++) {
+          leds[i].setRGB(75,  0,   130);
+          //leds[i] = ColorFromPalette(purpleblue, colorIndex[i]);
+
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+
+        EVERY_N_MILLISECONDS(1){
+      for (int i = 59; i < 65; i++) {
+        colorIndex[i]++;
+      }
+    }
+
+      flag = true;
+      if(flag){
+        FastLED.show();
+      }
+      loop++;
+      }
+      
+  }
+
+}
