@@ -94,13 +94,22 @@ void loop() {
         uint8_t sinBeat = beatsin8(30, 0, 255, 0, 0);
 
 
-        for (int i = 0; i < 50; i++) {
-          leds[i] = ColorFromPalette(redorange, colorIndex[i]);
+        for (int i = 0; i < 40; i++) {
+          leds[i].setRGB(255,0,0);
           if(!flag){
             delay(20);
             FastLED.show();
           }
         }
+
+        for (int i = 40; i < 50; i++) {
+          leds[i].setRGB(255,165,120);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+
 
         for(int j = 50; j < 55; j++){
           leds[j] = ColorFromPalette(redorange, colorIndex[j], sinBeat);
@@ -110,19 +119,22 @@ void loop() {
           }
         }
 
-        for (int i = 55; i < NUM_LEDS; i++) {
-          leds[i] = ColorFromPalette(redorange, colorIndex[i]);
+        for (int i = 55; i < 110; i++) {
+          leds[i].setRGB(255,165,120);
           if(!flag){
             delay(20);
             FastLED.show();
           }
         }
 
-         EVERY_N_MILLISECONDS(5){
-      for (int i = 0; i < 50; i++) {
-        colorIndex[i]++;
-      }
-    }
+        for (int i=110; i <NUM_LEDS; i++){
+          leds[i].setRGB(255,0,0);
+          if(!flag){
+            delay(20);
+            FastLED.show();
+          }
+        }
+
       delay(10);
       flag = true;
       if(flag){
@@ -140,7 +152,7 @@ void loop() {
 
 
         for (int i = 0; i < 45; i++) {
-          leds[i] = ColorFromPalette(blueshades, colorIndex[i]);
+          leds[i].setRGB(0,0,255);
           if(!flag){
             delay(20);
             FastLED.show();
@@ -148,7 +160,7 @@ void loop() {
         }
 
         for (int i = 45; i < 59; i++) {
-        leds[i] = ColorFromPalette(blueshades, colorIndex[i]);
+        leds[i].setRGB(0,0,255);
 
           if(!flag){
             delay(20);
@@ -164,7 +176,7 @@ void loop() {
         }
 
            for (int i = 65; i < 100; i++) {
-          leds[i] = ColorFromPalette(blueshades, colorIndex[i]);
+          leds[i].setRGB(255,0,255);
 
           if(!flag){
             delay(20);
@@ -173,7 +185,7 @@ void loop() {
         }
 
         for (int i = 100; i < NUM_LEDS; i++) {
-          leds[i] = ColorFromPalette(blueshades, colorIndex[i]);
+        leds[i].setRGB(0,0,255);
 
           if(!flag){
             delay(20);
@@ -182,13 +194,9 @@ void loop() {
         }
 
         EVERY_N_MILLISECONDS(1){
-      for (int i = 45; i < 59; i++) {
+      for (int i = 59; i < 65; i++) {
         colorIndex[i]++;
-      }
-       for (int i = 65; i < 100; i++) {
-        colorIndex[i]++;
-      }
-      
+      }    
     }
       delay(10);
       flag = true;
@@ -207,22 +215,22 @@ void loop() {
 
 
         for (int i = 0; i < 45; i++) {
-          leds[i] = ColorFromPalette(greenshades, colorIndex[i]);
+          leds[i].setRBG(0,255,0);
           if(!flag){
             delay(20);
             FastLED.show();
           }
         }
 
-        for (int i = 45; i < 59; i++) {
-        leds[i] = ColorFromPalette(greenshades, colorIndex[i]);
+        for (int i = 45; i < 100; i++) {
+        leds[i].setRGB(255,255,0);
 
           if(!flag){
             delay(20);
             FastLED.show();
           }
         }
-         for (int i = 59; i < 65; i++) {
+         for (int i = 100; i <105; i++) {
           leds[i] = ColorFromPalette(greenshades, colorIndex[i],sinBeat);
           if(!flag){
             delay(20);
@@ -230,17 +238,8 @@ void loop() {
           }
         }
 
-           for (int i = 65; i < 100; i++) {
-          leds[i] = ColorFromPalette(greenshades, colorIndex[i]);
-
-          if(!flag){
-            delay(20);
-            FastLED.show();
-          }
-        }
-
-        for (int i = 100; i < NUM_LEDS; i++) {
-          leds[i] = ColorFromPalette(greenshades, colorIndex[i]);
+           for (int i = 105; i < NUM_LEDS; i++) {
+         leds[i].setRGB(0,255,0);;
 
           if(!flag){
             delay(20);
